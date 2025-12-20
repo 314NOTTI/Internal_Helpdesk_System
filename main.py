@@ -1,29 +1,16 @@
-#1️⃣ database.py
+from fastapi import FastAPI
 
-#conexão com SQLite
+from database import engine
+from models import Base
 
-#sessão do banco
+app = FastAPI(title="Internal Helpdesk System")
 
-#2️⃣ models.py
 
-#User
+@app.on_event("startup")
+def on_startup():
+    Base.metadata.create_all(bind=engine)
 
-#Ticket
 
-#3️⃣ schemas.py
-
-#validação (o que entra / sai da API)
-
-#4️⃣ auth.py
-
-#hash de senha
-
-#JWT
-
-#login
-
-#5️⃣ main.py
-
-#rotas
-
-#integração de tudo
+@app.get("/")
+def root():
+    return {"status": "ok", "message": "Internal Helpdesk System is running"}
