@@ -1,15 +1,19 @@
 from fastapi import FastAPI
-
-from database import engine
+from contextlib import asynccontextmanager
+from database import engine 
 from models import Base
 
-app = FastAPI(title="Internal Helpdesk System")
-
-
-@app.on_event("startup")
-def on_startup():
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup
     Base.metadata.create_all(bind=engine)
+    yield
+    # Shutdown (se precisar no futuro) 
 
+app = FastAPI(
+    title="Internal Helpdesk System",
+    lifespan=lifespan
+)
 
 @app.get("/")
 def root():
