@@ -2,6 +2,19 @@ from pydantic import BaseModel
 from datetime import datetime
 from typing import Optional
 
+class UserBase(BaseModel):
+    name: str
+    email: str
+
+class UserCreate(UserBase):
+    pass
+
+class userresponse(UserBase):
+    id: int
+
+    class Config:
+        from_attributes = True
+
 class TicketBase(BaseModel):
     title: str
     description: str
