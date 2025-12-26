@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, status, HTTPException
 from sqlalchemy.orm import Session
 from database import SessionLocal
-from crud.tickets import create_ticket, get_tickets
+from crud.tickets import create_ticket, get_tickets, get_ticket_by_id
 import schemas
 
 router = APIRouter(
@@ -37,3 +37,20 @@ def read_tickets(
     db: Session = Depends(get_db)
 ):
     return get_tickets(db, skip=skip, limit=limit)
+
+@router.get(
+    "/{ticket_id}",
+    response_model=schemas.TicketResponse
+)
+def read_ticket(
+    ticket_id: int,
+    db: Session = Depends(get_db)
+):
+    ticket = get_ticket_by_id(db, ticket_id=ticket_id)
+    if ticket is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Ticket not found"
+        )
+    return ticket
+
