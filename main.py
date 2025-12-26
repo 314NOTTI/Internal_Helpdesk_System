@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from database import engine 
 from models import Base
+from routers import users
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -14,6 +15,8 @@ app = FastAPI(
     title="Internal Helpdesk System",
     lifespan=lifespan
 )
+
+app.include_router(users.router)
 
 @app.get("/")
 def root():
