@@ -1,7 +1,7 @@
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, status, HTTPException
 from sqlalchemy.orm import Session
 from database import SessionLocal
-from crud.tickets import create_ticket
+from crud.tickets import create_ticket, get_tickets
 import schemas
 
 router = APIRouter(
@@ -26,3 +26,14 @@ def create_ticket_endpoint(
     db: Session = Depends(get_db)
 ):
     return create_ticket(db=db, ticket=ticket)
+
+@router.get(
+    "/",
+    response_model=list[schemas.TicketResponse]
+)
+def read_tickets(
+    skip: int = 0,
+    limit: int = 100,
+    db: Session = Depends(get_db)
+):
+    return get_tickets(db, skip=skip, limit=limit)

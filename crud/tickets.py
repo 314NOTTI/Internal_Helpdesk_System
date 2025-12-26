@@ -13,3 +13,5 @@ def create_ticket(db: Session, ticket: schemas.TicketCreate):
     db.refresh(db_ticket)
     return db_ticket
 
+def get_tickets(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(Ticket).offset(skip).limit(limit).all()
