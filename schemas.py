@@ -23,7 +23,7 @@ class TicketBase(BaseModel):
 class TicketCreate(TicketBase):
     pass
 
-class ticketread(TicketBase):
+class TicketResponse(TicketBase):
     id: int
     status: str
     created_at: datetime

@@ -19,4 +19,5 @@ class Ticket(Base):
     description = Column(Text, nullable=False)
     status = Column(String(20), default="open")
     created_at = Column(DateTime, default=datetime.utcnow)
+    priority = Column(Integer, nullable=False)
 
