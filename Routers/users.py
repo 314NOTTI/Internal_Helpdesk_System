@@ -1,6 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-
 from database import SessionLocal
 import crud
 import schemas
@@ -32,7 +31,6 @@ def create_user(
             status_code=400,
             detail="Email already registered"
         )
-
     return crud.create_user(db=db, user=user)
 
 @router.get(
