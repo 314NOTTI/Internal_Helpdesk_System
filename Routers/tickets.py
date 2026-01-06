@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, status, HTTPException
 from sqlalchemy.orm import Session
 from database import SessionLocal
-from crud.tickets import create_ticket, get_tickets, get_ticket_by_id
+from crud.tickets import create_ticket, get_tickets, get_ticket_by_id, update_ticket
 import schemas
 
 router = APIRouter(
@@ -54,3 +54,19 @@ def read_ticket(
         )
     return ticket
 
+@router.patch(
+    "/{ticket_id}",
+    response_model=schemas.TicketResponse
+)
+def update_ticket_endpoint(
+    ticket_id: int,
+    ticket: schemas.TicketUpdate,
+    db: Session = Depends(get_db)
+):
+    updated_ticket = update_ticket(db, ticket_id, ticket)
+    if updated_ticket is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Ticket not found"
+        )
+    return updated_ticket

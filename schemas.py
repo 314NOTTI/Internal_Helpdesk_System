@@ -30,3 +30,11 @@ class TicketResponse(TicketBase):
 
     class Config:
         from_attributes = True
+
+from typing import Optional
+
+class TicketUpdate(BaseModel):
+    title: Optional[str] = None
+    description: Optional[str] = None
+    priority: Optional[int] = None
+    status: Optional[str] = None
