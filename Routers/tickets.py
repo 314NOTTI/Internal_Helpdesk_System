@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, status, HTTPException
 from sqlalchemy.orm import Session
 from database import SessionLocal
-from crud.tickets import create_ticket, get_tickets, get_ticket_by_id, update_ticket
+from crud.tickets import create_ticket, get_tickets, get_ticket_by_id, update_ticket, delete_ticket
 import schemas
 
 router = APIRouter(
@@ -70,3 +70,18 @@ def update_ticket_endpoint(
             detail="Ticket not found"
         )
     return updated_ticket
+
+@router.delete(
+    "/{ticket_id}",
+    status_code=status.HTTP_204_NO_CONTENT
+)
+def delete_ticket_endpoint(
+    ticket_id: int,
+    db: Session = Depends(get_db)
+):
+    success = delete_ticket(db, ticket_id)
+    if not success:
+        raise HTTPException(
+            status_code=404,
+            detail="Ticket not found"
+        )

@@ -36,3 +36,12 @@ def update_ticket(db: Session, ticket_id: int, ticket_data: schemas.TicketUpdate
     db.commit()
     db.refresh(ticket)
     return ticket
+
+def delete_ticket(db: Session, ticket_id: int):
+    ticket = db.query(Ticket).filter(Ticket.id == ticket_id).first()
+    if ticket is None:
+        return False
+
+    db.delete(ticket)
+    db.commit()
+    return True
